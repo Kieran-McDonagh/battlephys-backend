@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const mongooseConnection = require("./connection");
-const { getAllUsers } = require("./controllers/usersController");
+const apiRouter = require("./routers/api-router");
 
-app.get("/users", getAllUsers);
+app.use('/api', apiRouter);
 
 module.exports = app;
