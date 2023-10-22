@@ -34,3 +34,40 @@ describe("GET /users", () => {
       });
   });
 });
+
+describe('GET /:username', () => {
+  test('200: should respond with the specified user object', () => {
+    return request(app)
+    .get('/api/users/user1')
+    .expect(200)
+    .then(({body}) => {
+      const {user} = body
+      expect(user).toHaveProperty("_id", expect.any(String));
+      expect(user).toHaveProperty("username", 'user1');
+      expect(user).toHaveProperty("goal", 'lose fat');
+      expect(user).toHaveProperty("weight", 92);
+      expect(user).toHaveProperty("height", 181);
+      expect(user).toHaveProperty("age", 27);
+      expect(user).toHaveProperty("sex", 'M');
+      expect(user).toHaveProperty("calories", 0);
+      expect(user).toHaveProperty("workouts", expect.any(Array));
+      expect(user).toHaveProperty("admin", true);
+    })
+  });
+  test('400: should respond with a Bad Request if given invalid username', () => {
+    return request(app)
+    .get('/api/users/x')
+    .expect(400)
+    .then(({body}) => {
+      expect(body.message).toBe('Bad Request')
+    })
+  });
+  test('404: should respond Not Found if user does not exist', () => {
+    return request(app)
+    .get('/api/users/user9999')
+    .expect(404)
+    .then(({body}) => {
+      expect(body.message).toBe('Not Found')
+    })
+  });
+});
