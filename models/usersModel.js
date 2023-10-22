@@ -10,7 +10,12 @@ exports.fetchUserByName = async (username) => {
     return Promise.reject({ status: 400, message: "Bad Request" });
   }
   const user = await User.find(username);
-   return user.length === 0 
+  return user.length === 0
     ? Promise.reject({ status: 404, message: "Not Found" })
     : user[0];
+};
+
+exports.addUser = async (newUser) => {
+  const userToAdd = new User(newUser);
+  return userToAdd.save();
 };
