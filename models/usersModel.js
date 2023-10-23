@@ -28,3 +28,8 @@ exports.updateUserById = async (_id, property) => {
     ? Promise.reject({ status: 404, message: "Not Found" })
     : updatedUser;
 };
+
+exports.removeUserById = async (_id) => {
+    const deletedUser = await User.findOneAndRemove(_id)
+    return deletedUser === null ? Promise.reject({status: 404, message: 'Not Found'}) : deletedUser
+}

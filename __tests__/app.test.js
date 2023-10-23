@@ -15,6 +15,7 @@ afterAll(() => {
 let user1Id = "";
 let user2Id = "";
 let user3Id = "";
+let user4Id = "";
 
 describe("GET /users", () => {
   test("200: should return an array of all users in the database", () => {
@@ -27,6 +28,7 @@ describe("GET /users", () => {
         user1Id = users[0]._id;
         user2Id = users[1]._id;
         user3Id = users[2]._id;
+        user4Id = users[3]._id;
 
         users.forEach((user) => {
           expect(user).toHaveProperty("_id", expect.any(String));
@@ -154,14 +156,42 @@ describe("PATCH/user/:_id", () => {
         expect(body).toHaveProperty("details", expect.any(String));
       });
   });
-  test('404: should respond Not Found if the user does not exist', () => {
+  test("404: should respond Not Found if the user does not exist", () => {
     const propertyToUpdate = { calories: 1500 };
     return request(app)
       .patch(`/api/users/abc123456789012345678765`)
       .send(propertyToUpdate)
       .expect(404)
       .then(({ body }) => {
-        expect(body.message).toBe('Not Found')
+        expect(body.message).toBe("Not Found");
       });
+  });
+});
+
+describe("DELETE/users/:_id", () => {
+  test("200: should delete the user from the database ", () => {
+    return request(app)
+      .delete(`/api/users/${user4Id}`)
+      .expect(200)
+      .then(({ body }) => {
+        const { deletedUser } = body;
+        expect(deletedUser._id).toBe(user4Id);
+      });
+  });
+  test('400: should respond with bad request if given an invalid user id', () => {
+    return request(app)
+    .delete('/api/users/abc123')
+    .expect(400)
+    .then(({body}) => {
+      expect(body.message).toBe('Bad Request')
+    })
+  });
+  test('404: should respond Not Found if the user does not exist', () => {
+    return request(app)
+    .delete('/api/users/abcd12345678901234567890')
+    .expect(404)
+    .then(({body}) => {
+      expect(body.message).toBe('Not Found')
+    })
   });
 });

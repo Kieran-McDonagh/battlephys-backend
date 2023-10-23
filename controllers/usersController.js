@@ -3,6 +3,7 @@ const {
   fetchUserById,
   addUser,
   updateUserById,
+  removeUserById,
 } = require("../models/usersModel");
 
 exports.getAllUsers = (req, res, next) => {
@@ -39,4 +40,11 @@ exports.patchUserById = (req, res, next) => {
       res.status(200).send({ updatedUser: data });
     })
     .catch(next);
+};
+
+exports.deleteUserById = (req, res, next) => {
+  const _id = req.params;
+  removeUserById(_id).then((data) => {
+    res.status(200).send({deletedUser: data});
+  }).catch(next)
 };
