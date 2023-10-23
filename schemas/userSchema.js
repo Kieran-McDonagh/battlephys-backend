@@ -33,6 +33,9 @@ const userSchema = Schema({
   workouts: {
     type: [String],
   },
+  likedFeaturedWorkouts: {
+    type: [String]
+  },
   admin: {
     type: Boolean,
     required: true,
