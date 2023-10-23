@@ -12,6 +12,10 @@ afterAll(() => {
   mongoose.connection.close();
 });
 
+let user1Id = "";
+let user2Id = "";
+let user3Id = "";
+
 describe("GET /users", () => {
   test("200: should return an array of all users in the database", () => {
     return request(app)
@@ -19,6 +23,11 @@ describe("GET /users", () => {
       .expect(200)
       .then(({ body }) => {
         const { users } = body;
+
+        user1Id = users[0]._id;
+        user2Id = users[1]._id;
+        user3Id = users[2]._id;
+
         users.forEach((user) => {
           expect(user).toHaveProperty("_id", expect.any(String));
           expect(user).toHaveProperty("username", expect.any(String));
@@ -35,14 +44,14 @@ describe("GET /users", () => {
   });
 });
 
-describe("GET /:username", () => {
+describe("GET /users/:_id", () => {
   test("200: should respond with the specified user object", () => {
     return request(app)
-      .get("/api/users/user1")
+      .get(`/api/users/${user1Id}`)
       .expect(200)
       .then(({ body }) => {
         const { user } = body;
-        expect(user).toHaveProperty("_id", expect.any(String));
+        expect(user._id).toBe(user1Id);
         expect(user.username).toBe("user1");
         expect(user.goal).toBe("lose fat");
         expect(user.weight).toBe(92);
@@ -56,7 +65,7 @@ describe("GET /:username", () => {
   });
   test("400: should respond with a Bad Request if given invalid username", () => {
     return request(app)
-      .get("/api/users/x")
+      .get("/api/users/abc123")
       .expect(400)
       .then(({ body }) => {
         expect(body.message).toBe("Bad Request");
@@ -64,7 +73,7 @@ describe("GET /:username", () => {
   });
   test("404: should respond Not Found if user does not exist", () => {
     return request(app)
-      .get("/api/users/user9999")
+      .get("/api/users/abc456789012345678901234")
       .expect(404)
       .then(({ body }) => {
         expect(body.message).toBe("Not Found");
@@ -117,6 +126,42 @@ describe("POST /users", () => {
       .then(({ body }) => {
         expect(body.message).toBe("Bad Request");
         expect(body).toHaveProperty("details", expect.any(String));
+      });
+  });
+});
+
+describe("PATCH/user/:_id", () => {
+  test("200: should update the user object", () => {
+    const propertyToUpdate = { calories: 2000 };
+    return request(app)
+      .patch(`/api/users/${user2Id}`)
+      .send(propertyToUpdate)
+      .expect(200)
+      .then(({ body }) => {
+        const { updatedUser } = body;
+        expect(updatedUser._id).toBe(user2Id);
+        expect(updatedUser.calories).toBe(2000);
+      });
+  });
+  test("400: should respond with Bad Request if provided invalid data", () => {
+    const invalidPropertyToUpdate = { calories: "abcd" };
+    return request(app)
+      .patch(`/api/users/${user3Id}`)
+      .send(invalidPropertyToUpdate)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Bad Request");
+        expect(body).toHaveProperty("details", expect.any(String));
+      });
+  });
+  test('404: should respond Not Found if the user does not exist', () => {
+    const propertyToUpdate = { calories: 1500 };
+    return request(app)
+      .patch(`/api/users/abc123456789012345678765`)
+      .send(propertyToUpdate)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe('Not Found')
       });
   });
 });

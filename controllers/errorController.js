@@ -7,7 +7,7 @@ exports.handleCustomErrors = (err, req, res, next) => {
 };
 
 exports.handleMongoErrors = (err, req, res, next) => {
-  if (err.name === "ValidationError") {
+  if (err.name === "ValidationError" || err.name === 'CastError') {
     res.status(400).send({ message: "Bad Request", details: err.message });
   } else {
     next(err);
