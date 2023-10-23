@@ -223,34 +223,73 @@ describe("FEATURED WORKOUTS", () => {
         });
     });
   });
+
   describe("GET /featuredWorkouts/:id", () => {
     test("200: should respond with a specific featured workout", () => {
       return request(app)
-      .get(`/api/featuredWorkouts/${featuredWorkout1Id}`)
-      .expect(200)
-      .then(({body}) => {
-        const {featuredWorkout} = body
-        expect(featuredWorkout._id).toBe(featuredWorkout1Id)
-        expect(featuredWorkout.title).toBe('Workout 1')
-        expect(featuredWorkout.body).toEqual(["Workout 1 description"])
-        expect(featuredWorkout.author).toBe('user1')
-      })
+        .get(`/api/featuredWorkouts/${featuredWorkout1Id}`)
+        .expect(200)
+        .then(({ body }) => {
+          const { featuredWorkout } = body;
+          expect(featuredWorkout._id).toBe(featuredWorkout1Id);
+          expect(featuredWorkout.title).toBe("Workout 1");
+          expect(featuredWorkout.body).toEqual(["Workout 1 description"]);
+          expect(featuredWorkout.author).toBe("user1");
+        });
     });
-    test('400: should respond Bad Request if given invalid id', () => {
+    test("400: should respond Bad Request if given invalid id", () => {
       return request(app)
-      .get('/api/featuredWorkouts/abc1234')
-      .expect(400)
-      .then(({body}) => {
-        expect(body.message).toBe('Bad Request')
-      })
+        .get("/api/featuredWorkouts/abc1234")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("Bad Request");
+        });
     });
-    test('404: should respond Not Found if featuredWorkout does not exist', () => {
+    test("404: should respond Not Found if featuredWorkout does not exist", () => {
       return request(app)
-      .get('/api/featuredWorkouts/abcd12345678901234567890')
-      .expect(404)
-      .then(({body}) => {
-        expect(body.message).toBe('Not Found')
-      })
+        .get("/api/featuredWorkouts/abcd12345678901234567890")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("Not Found");
+        });
+    });
+  });
+
+  describe("POST /featuredWorkouts", () => {
+    test("201: should add a new featured workout to database", () => {
+      const featuredWorkoutToAdd = {
+        title: "Workout 6",
+        createdAt: new Date().toString(),
+        body: ["Workout 6 description"],
+        author: "user7",
+      };
+      return request(app)
+        .post("/api/featuredWorkouts")
+        .send(featuredWorkoutToAdd)
+        .expect(201)
+        .then(({ body }) => {
+          const { newFeaturedWorkout } = body;
+          expect(newFeaturedWorkout).toMatchObject({
+            ...featuredWorkoutToAdd,
+            _id: expect.any(String),
+            __v: expect.any(Number),
+          });
+        });
+    });
+    test("400: should respond with Bad Request and error details if posting a featured workout with invalid data ", () => {
+      const invalidFeaturedWorkout = {
+        title: 6,
+        body: 12345,
+        author: 12123,
+      };
+      return request(app)
+        .post("/api/featuredWorkouts")
+        .send(invalidFeaturedWorkout)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("Bad Request");
+          expect(body).toHaveProperty("details", expect.any(String));
+        });
     });
   });
 });
