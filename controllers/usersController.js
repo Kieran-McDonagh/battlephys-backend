@@ -44,7 +44,9 @@ exports.patchUserById = (req, res, next) => {
 
 exports.deleteUserById = (req, res, next) => {
   const _id = req.params;
-  removeUserById(_id).then((data) => {
-    res.status(200).send({deletedUser: data});
-  }).catch(next)
+  removeUserById(_id)
+    .then((data) => {
+      res.status(200).send({ deletedUser: data });
+    })
+    .catch(next);
 };

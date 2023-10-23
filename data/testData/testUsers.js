@@ -98,10 +98,7 @@ const testUsers = [
     sex: "F",
     calories: 0,
     admin: false,
-  }
+  },
 ];
-
-
-
 
 module.exports = testUsers;
