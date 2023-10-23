@@ -14,3 +14,8 @@ exports.fetchFeaturedWorkoutById = async (_id) => {
     ? Promise.reject({ status: 404, message: "Not Found" })
     : data[0];
 };
+
+exports.addFeaturedWorkout = async (featuredWorkoutToAdd) => {
+  const newFeaturedWorkout = new FeaturedWorkout(featuredWorkoutToAdd);
+  return newFeaturedWorkout.save();
+};
