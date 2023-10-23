@@ -199,6 +199,8 @@ describe("USERS", () => {
   });
 });
 
+let featuredWorkout1Id = "";
+
 describe("FEATURED WORKOUTS", () => {
   describe("GET /featuredWorkouts", () => {
     test("200: should respond with an array of featured workouts", () => {
@@ -207,15 +209,48 @@ describe("FEATURED WORKOUTS", () => {
         .expect(200)
         .then(({ body }) => {
           const { featuredWorkouts } = body;
+
+          featuredWorkout1Id = featuredWorkouts[0]._id;
+
           featuredWorkouts.forEach((workout) => {
             expect(workout).toHaveProperty("_id", expect.any(String));
             expect(workout).toHaveProperty("title", expect.any(String));
             expect(workout).toHaveProperty("author", expect.any(String));
-            expect(workout).toHaveProperty("body", expect.any(String));
+            expect(workout).toHaveProperty("body", expect.any(Array));
             expect(workout).toHaveProperty("createdAt", expect.any(String));
             expect(workout).toHaveProperty("__v", expect.any(Number));
           });
         });
+    });
+  });
+  describe("GET /featuredWorkouts/:id", () => {
+    test("200: should respond with a specific featured workout", () => {
+      return request(app)
+      .get(`/api/featuredWorkouts/${featuredWorkout1Id}`)
+      .expect(200)
+      .then(({body}) => {
+        const {featuredWorkout} = body
+        expect(featuredWorkout._id).toBe(featuredWorkout1Id)
+        expect(featuredWorkout.title).toBe('Workout 1')
+        expect(featuredWorkout.body).toEqual(["Workout 1 description"])
+        expect(featuredWorkout.author).toBe('user1')
+      })
+    });
+    test('400: should respond Bad Request if given invalid id', () => {
+      return request(app)
+      .get('/api/featuredWorkouts/abc1234')
+      .expect(400)
+      .then(({body}) => {
+        expect(body.message).toBe('Bad Request')
+      })
+    });
+    test('404: should respond Not Found if featuredWorkout does not exist', () => {
+      return request(app)
+      .get('/api/featuredWorkouts/abcd12345678901234567890')
+      .expect(404)
+      .then(({body}) => {
+        expect(body.message).toBe('Not Found')
+      })
     });
   });
 });
