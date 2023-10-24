@@ -2,6 +2,7 @@ const {
   fetchAllFeaturedWorkouts,
   fetchFeaturedWorkoutById,
   addFeaturedWorkout,
+  updateFeaturedWorkout,
 } = require("../models/featuredWorkoutsModel");
 
 exports.getAllFeaturedWorkouts = (req, res, next) => {
@@ -26,6 +27,16 @@ exports.postFeaturedWorkout = (req, res, next) => {
   addFeaturedWorkout(featuredWorkoutToAdd)
     .then((data) => {
       res.status(201).send({ newFeaturedWorkout: data });
+    })
+    .catch(next);
+};
+
+exports.patchFeaturedWorkout = (req, res, next) => {
+  const _id = req.params;
+  const propertyToUpdate = req.body;
+  updateFeaturedWorkout(_id, propertyToUpdate)
+    .then((data) => {
+      res.status(200).send({ updatedFeaturedWorkout: data });
     })
     .catch(next);
 };

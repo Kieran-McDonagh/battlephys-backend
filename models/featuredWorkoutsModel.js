@@ -19,3 +19,16 @@ exports.addFeaturedWorkout = async (featuredWorkoutToAdd) => {
   const newFeaturedWorkout = new FeaturedWorkout(featuredWorkoutToAdd);
   return newFeaturedWorkout.save();
 };
+
+exports.updateFeaturedWorkout = async (_id, propertyToUpdate) => {
+  const updatedProperty = await FeaturedWorkout.findOneAndUpdate(
+    _id,
+    propertyToUpdate,
+    {
+      new: true,
+    }
+  );
+  return updatedProperty === null
+    ? Promise.reject({ status: 404, message: "Not Found" })
+    : updatedProperty;
+};

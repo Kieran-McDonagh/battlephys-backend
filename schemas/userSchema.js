@@ -33,8 +33,8 @@ const userSchema = Schema({
   workouts: {
     type: [String],
   },
-  likedFeaturedWorkouts: {
-    type: [String]
+  savedWorkouts: {
+    type: [String],
   },
   admin: {
     type: Boolean,
