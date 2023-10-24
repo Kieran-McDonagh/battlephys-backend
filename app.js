@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
-const uri = require("./connection");
-const mongoose = require("mongoose");
-mongoose.connect(uri);
+const mongooseConnection = require("./connection");
 const apiRouter = require("./routers/api-router");
 const {
   handleCustomErrors,
