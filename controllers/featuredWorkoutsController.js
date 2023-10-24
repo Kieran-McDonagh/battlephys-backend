@@ -3,6 +3,7 @@ const {
   fetchFeaturedWorkoutById,
   addFeaturedWorkout,
   updateFeaturedWorkout,
+  removeFeaturedWorkout,
 } = require("../models/featuredWorkoutsModel");
 
 exports.getAllFeaturedWorkouts = (req, res, next) => {
@@ -37,6 +38,15 @@ exports.patchFeaturedWorkout = (req, res, next) => {
   updateFeaturedWorkout(_id, propertyToUpdate)
     .then((data) => {
       res.status(200).send({ updatedFeaturedWorkout: data });
+    })
+    .catch(next);
+};
+
+exports.deleteFeaturedWorkout = (req, res, next) => {
+  const _id = req.params;
+  removeFeaturedWorkout(_id)
+    .then((data) => {
+      res.status(200).send({ deletedFeaturedWorkout: data });
     })
     .catch(next);
 };

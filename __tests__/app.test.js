@@ -203,6 +203,7 @@ describe("USERS", () => {
 
 let featuredWorkout1Id = "";
 let featuredWorkout2Id = "";
+let featuredWorkout3Id = "";
 
 describe("FEATURED WORKOUTS", () => {
   describe("GET /featuredWorkouts", () => {
@@ -215,6 +216,7 @@ describe("FEATURED WORKOUTS", () => {
 
           featuredWorkout1Id = featuredWorkouts[0]._id;
           featuredWorkout2Id = featuredWorkouts[1]._id;
+          featuredWorkout3Id = featuredWorkouts[2]._id;
 
           featuredWorkouts.forEach((workout) => {
             expect(workout).toHaveProperty("_id", expect.any(String));
@@ -299,7 +301,7 @@ describe("FEATURED WORKOUTS", () => {
 
   describe("PATCH /featuredWorkouts/:_id", () => {
     test("200: should update the property of a specific featuredWorkout", () => {
-      const propertyToUpdate = { title: 'new title' };
+      const propertyToUpdate = { title: "new title" };
       return request(app)
         .patch(`/api/featuredWorkouts/${featuredWorkout2Id}`)
         .send(propertyToUpdate)
@@ -307,23 +309,22 @@ describe("FEATURED WORKOUTS", () => {
         .then(({ body }) => {
           const { updatedFeaturedWorkout } = body;
           expect(updatedFeaturedWorkout._id).toBe(featuredWorkout2Id);
-          expect(updatedFeaturedWorkout.title).toBe('new title');
+          expect(updatedFeaturedWorkout.title).toBe("new title");
         });
     });
     test("400: should respond with Bad Request if provided invalid data", () => {
-      const invalidPropertyToUpdate = { title: {hello: 'world'} };
+      const invalidPropertyToUpdate = { title: { hello: "world" } };
       return request(app)
         .patch(`/api/featuredWorkouts/${featuredWorkout2Id}`)
         .send(invalidPropertyToUpdate)
         .expect(400)
         .then(({ body }) => {
-          console.log(body);
           expect(body.message).toBe("Bad Request");
           expect(body).toHaveProperty("details", expect.any(String));
         });
     });
     test("404: should respond Not Found if the featuredWorkout does not exist", () => {
-      const propertyToUpdate = { title: 'new title' };
+      const propertyToUpdate = { title: "new title" };
       return request(app)
         .patch(`/api/featuredWorkouts/abc123456789012345678765`)
         .send(propertyToUpdate)
@@ -331,6 +332,34 @@ describe("FEATURED WORKOUTS", () => {
         .then(({ body }) => {
           expect(body.message).toBe("Not Found");
         });
+    });
   });
+
+  describe("DELETE featuredWorkout/:_id", () => {
+    test("204: should delete the featured workout", () => {
+      return request(app)
+        .delete(`/api/featuredWorkouts/${featuredWorkout3Id}`)
+        .expect(200)
+        .then(({ body }) => {
+          const { deletedFeaturedWorkout } = body;
+          expect(deletedFeaturedWorkout._id).toBe(featuredWorkout3Id);
+        });
+    });
+    test("400: should respond with bad request if given an invalid featured workout id", () => {
+      return request(app)
+        .delete("/api/featuredWorkouts/abc123")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("Bad Request");
+        });
+    });
+    test("404: should respond Not Found if the featured workout does not exist", () => {
+      return request(app)
+        .delete("/api/featuredWorkouts/abcd12345678901234567890")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("Not Found");
+        });
+    });
   });
 });

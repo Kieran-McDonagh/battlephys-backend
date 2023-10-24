@@ -32,3 +32,10 @@ exports.updateFeaturedWorkout = async (_id, propertyToUpdate) => {
     ? Promise.reject({ status: 404, message: "Not Found" })
     : updatedProperty;
 };
+
+exports.removeFeaturedWorkout = async (_id) => {
+  const deletedWorkout = await FeaturedWorkout.findOneAndRemove(_id);
+  return deletedWorkout === null
+    ? Promise.reject({ status: 404, message: "Not Found" })
+    : deletedWorkout;
+};
