@@ -11,7 +11,7 @@ const featuredWorkoutSchema = Schema({
     required: true,
   },
   body: {
-    type: [String],
+    type: Schema.Types.Mixed,
     required: true,
   },
   author: {
