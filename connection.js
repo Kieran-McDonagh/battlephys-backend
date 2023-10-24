@@ -5,10 +5,4 @@ const uri =
     ? process.env.TEST_DATABASE_URL
     : process.env.DATABASE_URL;
 
-const mongoose = require('mongoose');
-exports.mongooseConnection = mongoose.connect(uri)
-
-
-
-
-
+module.exports = uri;
