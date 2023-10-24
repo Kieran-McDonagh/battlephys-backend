@@ -2,11 +2,12 @@
   "name": "battlephys-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "listen.js",
   "scripts": {
     "test": "jest",
     "start": "node listen.js",
-    "seed": "node ./data/runSeed.js"
+    "seed": "node ./data/runSeed.js",
+    "seed-prod": "NODE_ENV=production npm run seed"
   },
   "keywords": [],
   "author": "",
