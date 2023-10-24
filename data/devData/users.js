@@ -6,7 +6,7 @@ const users = [
     height: 181,
     age: 27,
     sex: "M",
-    calories: 2000,
+    calories: 0,
     admin: true,
   },
 ];
