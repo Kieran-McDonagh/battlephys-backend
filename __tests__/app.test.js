@@ -44,6 +44,7 @@ describe("USERS", () => {
             expect(user).toHaveProperty("workouts", expect.any(Array));
             expect(user).toHaveProperty("admin", expect.any(Boolean));
             expect(user).toHaveProperty("savedWorkouts", expect.any(Array));
+            expect(user).toHaveProperty('firebaseId', expect.any(String))
           });
         });
     });
@@ -99,6 +100,7 @@ describe("USERS", () => {
         calories: 0,
         admin: false,
         workouts: [],
+        firebaseId: '4ypr6rZPKFZbE3fe6stZ9oMAOl43'
       };
       return request(app)
         .post("/api/users")
@@ -124,6 +126,7 @@ describe("USERS", () => {
         calories: 0,
         admin: false,
         workouts: [],
+        firebaseId: {}
       };
       return request(app)
         .post("/api/users")

@@ -40,6 +40,10 @@ const userSchema = Schema({
     type: Boolean,
     required: true,
   },
+  firebaseId: {
+    type: String,
+    required: true,
+  }
 });
 
 const User = mongoose.model("Users", userSchema);

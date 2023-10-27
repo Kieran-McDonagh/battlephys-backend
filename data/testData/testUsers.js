@@ -8,6 +8,7 @@ const testUsers = [
     sex: "M",
     calories: 0,
     admin: true,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl12",
   },
   {
     username: "user2",
@@ -18,6 +19,7 @@ const testUsers = [
     sex: "F",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl13",
   },
   {
     username: "user3",
@@ -28,6 +30,7 @@ const testUsers = [
     sex: "M",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl14",
   },
   {
     username: "user4",
@@ -38,6 +41,7 @@ const testUsers = [
     sex: "F",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl15",
   },
   {
     username: "user5",
@@ -48,6 +52,7 @@ const testUsers = [
     sex: "M",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl16",
   },
   {
     username: "user6",
@@ -58,6 +63,7 @@ const testUsers = [
     sex: "F",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl17",
   },
   {
     username: "user7",
@@ -68,6 +74,7 @@ const testUsers = [
     sex: "M",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl18",
   },
   {
     username: "user8",
@@ -78,6 +85,7 @@ const testUsers = [
     sex: "F",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl19",
   },
   {
     username: "user9",
@@ -88,6 +96,7 @@ const testUsers = [
     sex: "M",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl10",
   },
   {
     username: "user10",
@@ -98,6 +107,7 @@ const testUsers = [
     sex: "F",
     calories: 0,
     admin: false,
+    firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl11",
   },
 ];
 
