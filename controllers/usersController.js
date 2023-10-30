@@ -4,6 +4,8 @@ const {
   addUser,
   updateUserById,
   removeUserById,
+  fetchUserWorkouts,
+  addUserWorkout,
 } = require("../models/usersModel");
 
 exports.getAllUsers = (req, res, next) => {
@@ -50,3 +52,19 @@ exports.deleteUserById = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getUserWorkouts = (req, res, next) => {
+  const _id = req.params;
+  fetchUserWorkouts(_id).then((data) => {
+    res.status(200).send({workouts: data})
+  }).catch(next)
+}
+
+exports.postUserWorkout = (req, res, next) => {
+  const _id = req.params;
+  const workoutToAdd = req.body
+  addUserWorkout(_id, workoutToAdd).then((data) => {
+    res.status(201).send({newWorkout: data[0]})
+  })
+
+}

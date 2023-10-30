@@ -9,6 +9,14 @@ const testUsers = [
     calories: 0,
     admin: true,
     firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl12",
+    workouts: [
+      {
+        workoutDescription: "legs",
+        squat: { reps: 10 },
+        lunges: { reps: 10 },
+        sprints: { distance: 100 },
+      },
+    ],
   },
   {
     username: "user2",
@@ -20,6 +28,14 @@ const testUsers = [
     calories: 0,
     admin: false,
     firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl13",
+    workouts: [
+      {
+        workoutDescription: "chest",
+        bench: { reps: 10 },
+        pushups: { reps: 10 },
+        dips: { reps: 10 },
+      },
+    ],
   },
   {
     username: "user3",
@@ -31,6 +47,14 @@ const testUsers = [
     calories: 0,
     admin: false,
     firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl14",
+    workouts: [
+      {
+        workoutDescription: "back",
+        pullup: { reps: 10 },
+        rows: { reps: 10 },
+        pulldowns: { reps: 10 },
+      },
+    ],
   },
   {
     username: "user4",

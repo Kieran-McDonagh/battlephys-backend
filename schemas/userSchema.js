@@ -31,7 +31,7 @@ const userSchema = Schema({
     required: true,
   },
   workouts: {
-    type: [String],
+    type: [Array],
   },
   savedWorkouts: {
     type: [String],

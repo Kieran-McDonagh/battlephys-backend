@@ -31,6 +31,7 @@ describe("USERS", () => {
           user2Id = users[1]._id;
           user3Id = users[2]._id;
           user4Id = users[3]._id;
+          user5Id = users[4]._id;
 
           users.forEach((user) => {
             expect(user).toHaveProperty("_id", expect.any(String));
@@ -44,7 +45,7 @@ describe("USERS", () => {
             expect(user).toHaveProperty("workouts", expect.any(Array));
             expect(user).toHaveProperty("admin", expect.any(Boolean));
             expect(user).toHaveProperty("savedWorkouts", expect.any(Array));
-            expect(user).toHaveProperty('firebaseId', expect.any(String))
+            expect(user).toHaveProperty("firebaseId", expect.any(String));
           });
         });
     });
@@ -100,7 +101,7 @@ describe("USERS", () => {
         calories: 0,
         admin: false,
         workouts: [],
-        firebaseId: '4ypr6rZPKFZbE3fe6stZ9oMAOl43'
+        firebaseId: "4ypr6rZPKFZbE3fe6stZ9oMAOl43",
       };
       return request(app)
         .post("/api/users")
@@ -126,7 +127,7 @@ describe("USERS", () => {
         calories: 0,
         admin: false,
         workouts: [],
-        firebaseId: {}
+        firebaseId: {},
       };
       return request(app)
         .post("/api/users")
@@ -199,6 +200,56 @@ describe("USERS", () => {
         .expect(404)
         .then(({ body }) => {
           expect(body.message).toBe("Not Found");
+        });
+    });
+  });
+});
+
+describe("USERS WORKOUTS", () => {
+  describe("GET /users/:_id/workouts", () => {
+    test("200: should return an array of a users workouts", () => {
+      return request(app)
+        .get(`/api/users/${user1Id}/workouts`)
+        .expect(200)
+        .then(({ body }) => {
+          const { workouts } = body;
+          expect(workouts).toEqual([
+            {
+              workoutDescription: "legs",
+              squat: { reps: 10 },
+              lunges: { reps: 10 },
+              sprints: { distance: 100 },
+            },
+          ]);
+        });
+    });
+    test("404: should return Not Found if user has no workouts", () => {
+      return request(app)
+        .get(`/api/users/${user5Id}/workouts`)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("Not Found");
+        });
+    });
+  });
+
+  describe("POST /users/:_id/workouts", () => {
+    test("201: should post a new workout to the user object", () => {
+      const workoutToPost = {
+        title: "new title",
+        author: "new author",
+        description: "new description",
+        a: { reps: 1 },
+        b: { "distance(m)": 2 },
+        c: { "time(min)": 3 },
+      };
+      return request(app)
+        .post(`/api/users/${user1Id}/workouts`)
+        .send(workoutToPost)
+        .expect(201)
+        .then(({ body }) => {
+          const { newWorkout } = body;
+          expect(newWorkout).toEqual(workoutToPost);
         });
     });
   });

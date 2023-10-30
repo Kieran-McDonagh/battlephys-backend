@@ -35,3 +35,21 @@ exports.removeUserById = async (_id) => {
     ? Promise.reject({ status: 404, message: "Not Found" })
     : deletedUser;
 };
+
+exports.fetchUserWorkouts = async (_id) => {
+  const user = await User.find(_id);
+  const [workouts] = user[0].workouts
+  return user.length === 0 || user[0].workouts.length === 0
+    ? Promise.reject({ status: 404, message: "Not Found" })
+    : workouts;
+}
+
+
+exports.addUserWorkout = async (_id, workout) => {
+  const updatedUser = await User.findOneAndUpdate(
+    { _id },
+    { $push: { workouts: workout } },
+    { new: true }
+  );
+  return updatedUser.workouts[updatedUser.workouts.length -1];
+};
